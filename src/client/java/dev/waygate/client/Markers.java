@@ -20,8 +20,8 @@ import java.util.Map;
  * when no portal is found on the other side, grey while unknown.
  */
 final class Markers {
-	private static final float TEXT = 0.5f;
-	private static final float SMALL = 0.4f;
+	private static final float TEXT = 1.2f;
+	private static final float SMALL = 0.9f;
 	private static final int UNKNOWN = 0xFFA0A0A0;
 	private static final int NEW = 0xFFC080FF;
 
@@ -63,11 +63,11 @@ final class Markers {
 				line2 = "→ " + Predictor.label(to, res.linked().get()) + " (one way)";
 			}
 			Gizmos.cuboid(box(r).inflate(0.03), GizmoStyle.stroke(color, 2.0f));
-			Vec3 top = new Vec3(r.centerX(), r.min().y() + r.height() + 1.8, r.centerZ());
+			Vec3 top = new Vec3(r.centerX(), r.min().y() + r.height() + 2.0, r.centerZ());
 			// labels show through walls: they are how you find a portal again
 			Gizmos.billboardText(k.label(), top, TextGizmo.Style.forColorAndCentered(color).withScale(TEXT)).setAlwaysOnTop();
 			if (!line2.isEmpty()) {
-				Gizmos.billboardText(line2, top.add(0, -0.5, 0), TextGizmo.Style.forColorAndCentered(0xFFE0E0E0).withScale(SMALL))
+				Gizmos.billboardText(line2, top.add(0, -10 * TEXT / 16.0, 0), TextGizmo.Style.forColorAndCentered(0xFFE0E0E0).withScale(SMALL))
 						.setAlwaysOnTop();
 			}
 		}
