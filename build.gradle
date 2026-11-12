@@ -17,6 +17,10 @@ loom {
 			// Keep the dev game small enough for 8 GB machines.
 			vmArgs "-Xms256M", "-Xmx2G"
 			// ./gradlew runClient -Pdevscript=tools/x.txt: run the commands in that file after joining (see DevScript)
+			// ./gradlew runClient -Pselftest=portals: the in-game acceptance test (see SelfTest)
+			if (project.hasProperty("selftest")) {
+				property "waygate.selftest", project.property("selftest").toString()
+			}
 			if (project.hasProperty("devscript")) {
 				property "waygate.devscript", file(project.property("devscript").toString()).absolutePath
 			}

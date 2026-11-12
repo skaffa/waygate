@@ -28,9 +28,9 @@ import java.util.Optional;
  * scales and borders learned per dimension, and portals from the integrated server (exact) or from
  * memory. Recomputed a few times per second; the HUD and markers read the result.
  */
-final class Predictor {
+public final class Predictor {
 	/** The portal the HUD is about. {@code standing}: the player is inside it. */
-	record Focus(PortalRect rect, boolean standing) {
+	public record Focus(PortalRect rect, boolean standing) {
 	}
 
 	/**
@@ -40,7 +40,7 @@ final class Predictor {
 	 * @param known remembered portals in the target dimension
 	 * @param sim new-portal placement in singleplayer, or null
 	 */
-	record View(Focus focus, String from, String to, Prediction.Result result, boolean exact, boolean pending,
+	public record View(Focus focus, String from, String to, Prediction.Result result, boolean exact, boolean pending,
 			int known, boolean borderKnown, ServerPeek.Sim sim) {
 	}
 
@@ -102,7 +102,7 @@ final class Predictor {
 	}
 
 	/** Prediction for a player at x, y, z, optionally inside {@code focus}. */
-	static View predict(ClientLevel level, Focus focus, double x, double y, double z) {
+	public static View predict(ClientLevel level, Focus focus, double x, double y, double z) {
 		String from = Waygate.dimId(level);
 		String to = Waygate.targetDimId(from);
 		PortalMemory memory = Waygate.memory();

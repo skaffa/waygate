@@ -1,6 +1,7 @@
 package dev.waygate.client;
 
 import dev.waygate.client.dev.DevScript;
+import dev.waygate.client.dev.SelfTest;
 import dev.waygate.core.Border;
 import dev.waygate.core.PortalMath;
 import dev.waygate.core.PortalMemory;
@@ -65,6 +66,7 @@ public final class WaygateClient implements ClientModInitializer {
 
 	private static void tick(Minecraft mc) {
 		DevScript.tick(mc);
+		SelfTest.tick(mc);
 		var next = Commands.openNext;
 		if (next != null) {
 			Commands.openNext = null;

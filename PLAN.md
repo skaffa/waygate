@@ -164,6 +164,10 @@ Only if no candidate; spectators get no teleport at all. Axis = entry portal blo
    with no partner; records Waygate's prediction, walks the player through each portal (teleport into
    the portal block, wait for the dimension change by condition), compares the real arrival with the
    prediction, logs `SELFTEST PASS/FAIL`. Also an SP run for the exact path.
+   Done 2026-11-12: `./gradlew runClient -Pselftest=portals` passes in singleplayer (new portal at the
+   exactly simulated spot) and on the test server (memory only). Waits use server game time; after an
+   arrival the player must be out of a portal for a while (10-tick cooldown that resets while inside),
+   and on a lagging server a step-in can stall once, so the test steps out and back in (logged).
 6. **Delivery.** README, CHANGELOG, `media/modrinth-description.md`, gallery (1600×900) + captions.
    Ask before creating the GitHub repo, pushing, tagging.
 

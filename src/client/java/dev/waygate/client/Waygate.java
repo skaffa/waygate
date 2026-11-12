@@ -101,7 +101,7 @@ public final class Waygate {
 	}
 
 	/** Deletes all remembered portals and dimension facts of the current world. */
-	static int forgetAll() {
+	public static int forgetAll() {
 		PortalMemory m = memory();
 		int n = m.portalCount();
 		try {

@@ -10,7 +10,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.atomic.AtomicInteger;
 import java.util.function.BooleanSupplier;
 
 /**
@@ -24,8 +23,6 @@ public final class DevScript {
 	private static List<String> lines;
 	private static int index;
 	private static int waitTicks = 60;
-	/** Server commands sent but not run yet (singleplayer). */
-	private static final AtomicInteger QUEUED = new AtomicInteger();
 	private static BooleanSupplier until;
 	private static int untilTicks;
 
@@ -64,7 +61,7 @@ public final class DevScript {
 			Waygate.LOG.info("[devscript] {}", line);
 			if (line.equals("sync")) {
 				// wait until the server has run every command sent so far
-				until = () -> QUEUED.get() == 0;
+				until = DevCommands::idle;
 				untilTicks = 0;
 				return;
 			}
@@ -101,27 +98,7 @@ public final class DevScript {
 				mc.stop();
 				return;
 			}
-			String cmd = line.startsWith("/") ? line.substring(1) : line;
-			var server = mc.getSingleplayerServer();
-			if (server != null && !cmd.startsWith("waygate")) {
-				// singleplayer test worlds may have cheats off: run as the server, with the player as @s
-				var id = mc.player.getUUID();
-				QUEUED.incrementAndGet();
-				server.execute(() -> {
-					try {
-						var sp = server.getPlayerList().getPlayer(id);
-						var src = server.createCommandSourceStack();
-						if (sp != null) {
-							src = src.withEntity(sp).withPosition(sp.position()).withLevel(sp.level());
-						}
-						server.getCommands().performPrefixedCommand(src, cmd);
-					} finally {
-						QUEUED.decrementAndGet();
-					}
-				});
-			} else {
-				mc.player.connection.sendCommand(cmd);
-			}
+			DevCommands.run(mc, line);
 			waitTicks = 2;
 			return;
 		}

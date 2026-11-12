@@ -40,13 +40,13 @@ import java.util.concurrent.ConcurrentHashMap;
  * <p>Reads run on the server thread and never load or generate chunks: POI data comes from the POI
  * storage, block states are only read in chunks that are already loaded. Results come back a tick later.
  */
-final class ServerPeek {
+public final class ServerPeek {
 	/** Portals found around {@code center} (vanilla search square of {@code radius}). */
 	record Portals(String dim, Pos center, int radius, List<PortalRect> rects, long time) {
 	}
 
 	/** New-portal simulation result: {@code loaded} false when the area is not fully loaded on the server. */
-	record Sim(boolean loaded, Optional<CreatePortalSim.Placement> placement, long time) {
+	public record Sim(boolean loaded, Optional<CreatePortalSim.Placement> placement, long time) {
 	}
 
 	/** Facts of one dimension, read from the server. */
@@ -73,7 +73,7 @@ final class ServerPeek {
 	private ServerPeek() {
 	}
 
-	static boolean active() {
+	public static boolean active() {
 		return Minecraft.getInstance().hasSingleplayerServer();
 	}
 
