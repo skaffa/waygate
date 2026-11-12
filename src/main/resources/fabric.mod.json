@@ -1,0 +1,33 @@
+{
+	"schemaVersion": 1,
+	"id": "waygate",
+	"version": "${version}",
+	"name": "Waygate",
+	"description": "Client-side nether portal planner: shows where a portal leads before you step in, which portal it links to, warns about mislinks, and tells you where to build the partner portal. Sends no packets.",
+	"authors": [
+		"Skaffa",
+		"Claude (Anthropic)"
+	],
+	"contact": {
+		"homepage": "https://github.com/skaffa/waygate",
+		"sources": "https://github.com/skaffa/waygate",
+		"issues": "https://github.com/skaffa/waygate/issues"
+	},
+	"license": "MIT",
+	"icon": "assets/waygate/icon.png",
+	"environment": "client",
+	"entrypoints": {
+		"client": [
+			"dev.waygate.client.WaygateClient"
+		]
+	},
+	"depends": {
+		"fabricloader": ">=0.20.1",
+		"minecraft": "~26.3",
+		"java": ">=25",
+		"fabric-api": "*"
+	},
+	"suggests": {
+		"modmenu": "*"
+	}
+}
