@@ -19,6 +19,9 @@
 	"entrypoints": {
 		"client": [
 			"dev.waygate.client.WaygateClient"
+		],
+		"modmenu": [
+			"dev.waygate.client.compat.ModMenuIntegration"
 		]
 	},
 	"depends": {

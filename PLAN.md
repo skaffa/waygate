@@ -158,6 +158,7 @@ Only if no candidate; spectators get no teleport at all. Axis = entry portal blo
    RCON 25576) checked in game with `/waygate debug`.
 3. **HUD panel + warnings + markers.** Screenshots of panel, warning and markers, looked at.
 4. **Commands: plan, name, list, pairs (+ screen), config screen.**
+   Done 2026-11-12: `tools/m4.txt`; `plan` retries by itself while the integrated server answers.
 5. **Self-test** (`-Pselftest=portals`) on the test server (copied `run-server/`): builds with commands in
    both dimensions a correct pair, a mislinked pair (older portal closer to the target), and a portal
    with no partner; records Waygate's prediction, walks the player through each portal (teleport into

@@ -31,7 +31,6 @@ import net.minecraft.world.level.block.state.BlockState;
 import java.util.List;
 import java.util.Locale;
 
-import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
 
 /** Client entrypoint: events, per-tick work and the {@code /waygate} command. */
 public final class WaygateClient implements ClientModInitializer {
@@ -53,13 +52,7 @@ public final class WaygateClient implements ClientModInitializer {
 			ServerPeek.clear();
 			Predictor.clear();
 		});
-		ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> dispatcher.register(literal("waygate")
-				.then(literal("debug").executes(WaygateClient::debug))
-				.then(literal("forget").then(literal("all").executes(c -> {
-					int n = Waygate.forgetAll();
-					c.getSource().sendFeedback(Component.literal("Waygate: forgot " + n + " portals of this world"));
-					return 1;
-				})))));
+		ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> Commands.register(dispatcher));
 		Waygate.LOG.info("Waygate loaded");
 	}
 
@@ -72,6 +65,11 @@ public final class WaygateClient implements ClientModInitializer {
 
 	private static void tick(Minecraft mc) {
 		DevScript.tick(mc);
+		var next = Commands.openNext;
+		if (next != null) {
+			Commands.openNext = null;
+			mc.gui.setScreen(next.get());
+		}
 		if (mc.level == null || mc.player == null) {
 			return;
 		}
@@ -90,6 +88,7 @@ public final class WaygateClient implements ClientModInitializer {
 		}
 		PortalScanner.tick(mc);
 		ServerPeek.tick(mc);
+		Commands.tick();
 		Predictor.tick(mc);
 		Markers.tick(mc);
 		if (tickCount % 100 == 0) {
@@ -110,7 +109,7 @@ public final class WaygateClient implements ClientModInitializer {
 		}
 	}
 
-	private static int debug(CommandContext<FabricClientCommandSource> c) {
+	static int debug(CommandContext<FabricClientCommandSource> c) {
 		Minecraft mc = Minecraft.getInstance();
 		if (mc.level == null || mc.player == null) {
 			return 0;
