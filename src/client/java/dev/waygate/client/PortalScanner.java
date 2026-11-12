@@ -158,7 +158,7 @@ final class PortalScanner {
 		}
 	}
 
-	private static List<PortalRect> group(Set<BlockPos> blocks, Axis axis) {
+	static List<PortalRect> group(Set<BlockPos> blocks, Axis axis) {
 		List<Pos> ps = new ArrayList<>(blocks.size());
 		for (BlockPos b : blocks) {
 			ps.add(new Pos(b.getX(), b.getY(), b.getZ()));
@@ -167,7 +167,7 @@ final class PortalScanner {
 	}
 
 	/** Connected portal blocks of one axis: up, down and along the axis. */
-	private static Set<BlockPos> fill(ClientLevel level, BlockPos start, Axis axis) {
+	static Set<BlockPos> fill(ClientLevel level, BlockPos start, Axis axis) {
 		Set<BlockPos> out = new HashSet<>();
 		ArrayDeque<BlockPos> queue = new ArrayDeque<>();
 		out.add(start);

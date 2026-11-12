@@ -145,7 +145,7 @@ public final class PortalMemory {
 	}
 
 	/** Two rectangles share a block. */
-	static boolean overlaps(PortalRect a, PortalRect b) {
+	public static boolean overlaps(PortalRect a, PortalRect b) {
 		if (a.axis() != b.axis()) {
 			// a crossing portal shares a block only where both contain it
 			for (Pos p : a.blocks()) {

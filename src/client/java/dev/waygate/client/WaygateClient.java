@@ -8,6 +8,7 @@ import dev.waygate.core.PortalRect;
 import dev.waygate.core.PortalSearch;
 import dev.waygate.core.Pos;
 
+import com.mojang.blaze3d.platform.InputConstants;
 import com.mojang.brigadier.context.CommandContext;
 
 import net.fabricmc.api.ClientModInitializer;
@@ -15,11 +16,16 @@ import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallba
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientChunkEvents;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
+import net.fabricmc.fabric.api.client.keymapping.v1.KeyMappingHelper;
 import net.fabricmc.fabric.api.client.networking.v1.ClientPlayConnectionEvents;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.HudElementRegistry;
+import net.fabricmc.fabric.api.client.rendering.v1.hud.VanillaHudElements;
+import net.minecraft.client.KeyMapping;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.multiplayer.ClientLevel;
 import net.minecraft.core.BlockPos;
 import net.minecraft.network.chat.Component;
+import net.minecraft.resources.Identifier;
 import net.minecraft.world.level.block.state.BlockState;
 
 import java.util.List;
@@ -30,15 +36,22 @@ import static net.fabricmc.fabric.api.client.command.v2.ClientCommands.literal;
 /** Client entrypoint: events, per-tick work and the {@code /waygate} command. */
 public final class WaygateClient implements ClientModInitializer {
 	private static int tickCount;
+	private static KeyMapping hudKey;
 
 	@Override
 	public void onInitializeClient() {
+		Waygate.loadConfig();
+		KeyMapping.Category category = KeyMapping.Category.register(Identifier.fromNamespaceAndPath(Waygate.MOD_ID, "main"));
+		hudKey = KeyMappingHelper.registerKeyMapping(new KeyMapping("key.waygate.hud", InputConstants.KEY_U, category));
+		HudElementRegistry.attachElementAfter(VanillaHudElements.CROSSHAIR, Identifier.fromNamespaceAndPath(Waygate.MOD_ID, "panel"),
+				WaygateHud::extract);
 		ClientTickEvents.END_CLIENT_TICK.register(WaygateClient::tick);
 		ClientChunkEvents.CHUNK_LOAD.register(PortalScanner::onChunkLoad);
 		ClientPlayConnectionEvents.DISCONNECT.register((handler, mc) -> {
 			Waygate.close();
 			PortalScanner.clear();
 			ServerPeek.clear();
+			Predictor.clear();
 		});
 		ClientCommandRegistrationCallback.EVENT.register((dispatcher, context) -> dispatcher.register(literal("waygate")
 				.then(literal("debug").executes(WaygateClient::debug))
@@ -66,8 +79,19 @@ public final class WaygateClient implements ClientModInitializer {
 		if (tickCount % 20 == 0) {
 			learn(mc.level);
 		}
+		while (hudKey.consumeClick()) {
+			Waygate.config.hudMode = Waygate.config.hudMode.next();
+			Waygate.saveConfig();
+			Waygate.say(switch (Waygate.config.hudMode) {
+				case AUTO -> "panel when at a portal";
+				case ALWAYS -> "panel always (also where your spot leads)";
+				case OFF -> "panel off";
+			});
+		}
 		PortalScanner.tick(mc);
 		ServerPeek.tick(mc);
+		Predictor.tick(mc);
+		Markers.tick(mc);
 		if (tickCount % 100 == 0) {
 			Waygate.save();
 		}

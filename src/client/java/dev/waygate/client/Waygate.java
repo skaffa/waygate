@@ -3,6 +3,7 @@ package dev.waygate.client;
 import dev.waygate.core.Dim;
 import dev.waygate.core.PortalMemory;
 import dev.waygate.core.PortalStore;
+import dev.waygate.core.WaygateConfig;
 
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.ChatFormatting;
@@ -30,10 +31,25 @@ public final class Waygate {
 	public static final String OVERWORLD = Level.OVERWORLD.identifier().toString();
 	public static final String NETHER = Level.NETHER.identifier().toString();
 
+	private static final Path CONFIG_FILE = DIR.resolve("config.json");
+	public static WaygateConfig config = new WaygateConfig();
+
 	private static String worldKey;
 	private static PortalMemory memory = new PortalMemory();
 
 	private Waygate() {
+	}
+
+	static void loadConfig() {
+		config = WaygateConfig.load(CONFIG_FILE);
+	}
+
+	public static void saveConfig() {
+		try {
+			config.save(CONFIG_FILE);
+		} catch (IOException e) {
+			LOG.warn("Could not save {}", CONFIG_FILE, e);
+		}
 	}
 
 	/** Singleplayer save folder or server address. Null when not in a world. */
