@@ -93,6 +93,10 @@ public final class DevScript {
 				waitTicks = 10;
 				return;
 			}
+			if (line.equals("clearchat")) {
+				mc.gui.hud.getChat().clearMessages(false);
+				continue;
+			}
 			if (line.equals("quit")) {
 				Waygate.save();
 				mc.stop();

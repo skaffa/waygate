@@ -20,8 +20,8 @@ import java.util.Map;
  * when no portal is found on the other side, grey while unknown.
  */
 final class Markers {
-	private static final float TEXT = 1.2f;
-	private static final float SMALL = 0.9f;
+	private static final float TEXT = 0.9f;
+	private static final float SMALL = 0.7f;
 	private static final int UNKNOWN = 0xFFA0A0A0;
 	private static final int NEW = 0xFFC080FF;
 
