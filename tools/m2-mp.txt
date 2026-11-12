@@ -1,0 +1,39 @@
+# M2 check on the test server: remembered portals only (no peek).
+# Run: ./gradlew runServer, then ./gradlew runClient -Pdevscript=tools/m2-mp.txt --args="--username WaygateTester --quickPlayMultiplayer 127.0.0.1:25566"
+wait 100
+waygate forget all
+gamemode creative
+time set day
+# overworld portal at x 800..801, y 100..102, z 0 (axis x)
+execute in minecraft:overworld run forceload add 784 0 816 16
+execute in minecraft:overworld run fill 799 99 0 802 103 0 minecraft:obsidian
+execute in minecraft:overworld run fill 800 100 0 801 102 0 minecraft:nether_portal[axis=x]
+execute in minecraft:overworld run fill 797 99 1 804 99 6 minecraft:glass
+# nether portal at x 100..101, y 100..102, z 0, plus a second one 30 blocks east
+execute in minecraft:the_nether run forceload add 64 0 160 16
+execute in minecraft:the_nether run fill 99 99 0 102 103 0 minecraft:obsidian
+execute in minecraft:the_nether run fill 100 100 0 101 102 0 minecraft:nether_portal[axis=x]
+execute in minecraft:the_nether run fill 129 99 0 132 103 0 minecraft:obsidian
+execute in minecraft:the_nether run fill 130 100 0 131 102 0 minecraft:nether_portal[axis=x]
+execute in minecraft:the_nether run fill 97 99 1 104 99 6 minecraft:glass
+wait 60
+execute in minecraft:overworld run tp @s 800.5 100 4.5 180 0
+waitpos minecraft:overworld 800.5 4.5
+wait 60
+wait 100
+waygate debug
+wait 60
+waygate debug
+execute in minecraft:the_nether run tp @s 100.5 100 5.5 180 0
+waitpos minecraft:the_nether 100.5 5.5
+wait 100
+waygate debug
+wait 60
+waygate debug
+# break one block of the nether portal frame: portal blocks vanish, memory must drop that portal
+execute in minecraft:the_nether run setblock 99 101 0 minecraft:air
+wait 60
+wait 40
+waygate debug
+wait 20
+quit

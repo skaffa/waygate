@@ -152,8 +152,10 @@ Only if no candidate; spectators get no teleport at all. Axis = entry portal blo
    tests: scaling both ways and custom scales, floor of negatives, border clamp (`maxX - 1e-5`), the
    16/128 square edges, 3D closest + lower-Y tie break, ambiguous ties, big portals, both-ways pairing.
 2. **Memory + scanner + SP peek.** Remember portals per world/dimension, learn scales and borders,
-   ServerPeek on the integrated server. Verify in 26.3 that dimension types are available on the client
-   (`registryAccess`), else learn them per visit.
+   ServerPeek on the integrated server. Scales, borders and heights are learned per visit (the client
+   does not know which dimension type the other level uses); in singleplayer they come from the server.
+   Done 2026-11-12: `tools/m2.txt` (singleplayer) and `tools/m2-mp.txt` (test server on port 25566,
+   RCON 25576) checked in game with `/waygate debug`.
 3. **HUD panel + warnings + markers.** Screenshots of panel, warning and markers, looked at.
 4. **Commands: plan, name, list, pairs (+ screen), config screen.**
 5. **Self-test** (`-Pselftest=portals`) on the test server (copied `run-server/`): builds with commands in

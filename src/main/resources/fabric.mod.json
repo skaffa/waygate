@@ -29,5 +29,11 @@
 	},
 	"suggests": {
 		"modmenu": "*"
-	}
+	},
+	"mixins": [
+		{
+			"config": "waygate.client.mixins.json",
+			"environment": "client"
+		}
+	]
 }
