@@ -18,7 +18,7 @@ import java.util.Locale;
 import java.util.function.BooleanSupplier;
 
 /**
- * Dev-only acceptance test (PLAN.md milestone 5), run with {@code ./gradlew runClient -Pselftest=portals}
+ * Dev-only acceptance test, run with {@code ./gradlew runClient -Pselftest=portals}
  * on the test server (player is op) or in a singleplayer world. It builds portals with commands in both
  * dimensions, lets the player see them, then walks the player through each portal and checks that the
  * server sends the player where Waygate predicted:

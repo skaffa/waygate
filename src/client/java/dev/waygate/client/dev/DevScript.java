@@ -14,7 +14,7 @@ import java.util.function.BooleanSupplier;
 
 /**
  * Dev only: runs the lines of the file named by {@code -Dwaygate.devscript} once the player is in a world
- * ({@code ./gradlew runClient -Pdevscript=tools/x.txt}). Lines: {@code wait <ticks>}, {@code screenshot <name>},
+ * ({@code ./gradlew runClient -Pdevscript=<file>}). Lines: {@code wait <ticks>}, {@code screenshot <name>},
  * {@code quit}, {@code # comment}; anything else is sent as a command (client commands like {@code waygate
  * debug} included).
  */

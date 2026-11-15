@@ -4,7 +4,7 @@ Client-side nether portal planner for Minecraft 26.3 (Fabric). See where a porta
 step in**, which portal it will link to, whether the way back returns to the same portal, and where to
 build a partner so the pair links both ways. No server mod, no packets of its own.
 
-![Mislink warning](media/gallery/1-mislink.png)
+![Mislink warning](https://raw.githubusercontent.com/skaffa/waygate/ffa7f7daa85b71c528135ed2850c290637d01ba7/media/gallery/1-mislink.png)
 
 ## Use
 
@@ -53,8 +53,6 @@ Read from the game's code, not from older wikis:
   platform at Y 70 or higher (nether: at most 118).
 - The nether leads to the overworld; every other dimension leads to the nether.
 
-See [PLAN.md](PLAN.md) for the full rules and the code they come from.
-
 ## Build
 
 Needs JDK 25.
@@ -74,8 +72,7 @@ Needs JDK 25.
 
 It builds a fresh set of portals in both dimensions (a working pair, a mislink, a one-way return and a
 portal without partner), walks the player through each one and checks that the server sends the player
-where Waygate predicted. It logs `SELFTEST PASS` or `SELFTEST FAIL` and quits. `tools/m*.txt` and
-`tools/gallery.txt` are scripted checks and screenshots (`-Pdevscript=...`).
+where Waygate predicted. It logs `SELFTEST PASS` or `SELFTEST FAIL` and quits.
 
 ## License
 
